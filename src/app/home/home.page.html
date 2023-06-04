@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Password Generator
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,12 +9,30 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">Password Generator</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <ion-input [(ngModel)]="numWords" placeholder="Number of words" type="number"></ion-input>
+    <ion-input [(ngModel)]="description" placeholder="Description"></ion-input>
+    <ion-input [(ngModel)]="password" placeholder="Password"></ion-input>
+    <ion-button [disabled]="!passwordService.words.length" (click)="generatePassword()">Generate Password</ion-button>
+    <ion-button [disabled]="!password" (click)="savePassword()">Save Password</ion-button>
+    <ion-list>
+      <ion-list-header>
+        Saved Passwords
+      </ion-list-header>
+      <ion-item *ngIf="!passwordService.savedPasswords.length" lines="none">No saved passwords</ion-item>
+      <ion-item *ngFor="let item of passwordService.savedPasswords; let i = index">
+        <ion-label><span *ngIf="item.description">{{item.description}}: </span>{{item.password}}</ion-label>
+        <ion-button slot="end" fill="clear" (click)="copyPassword(item.password)">
+          Copy
+        </ion-button>
+        <ion-button slot="end" fill="clear" color="danger" (click)="passwordService.remove(i)">
+          Delete
+        </ion-button>
+      </ion-item>
+    </ion-list>
   </div>
 </ion-content>
